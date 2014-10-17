@@ -57,7 +57,7 @@
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Code\Libraries3rdParty\OpenGL.Core\OpenGL.Core.csproj">
+    <ProjectReference Include="..\OpenGL.Core\OpenGL.Core.csproj">
       <Project>{aef49083-d5a5-4e78-a828-c710e5aa633f}</Project>
       <Name>OpenGL.Core</Name>
     </ProjectReference>
