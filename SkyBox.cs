@@ -48,21 +48,41 @@ namespace OpenGLHelper
 			"uniform mat4 modelViewMatrix;"+
 			"in vec3 inPosition;"+
 			"out vec3 texCoord;"+
+			"out vec3 vertex;"+
 			"void main()"+
 			"{"+
 			"	/*Rotate our Z-Up co-ordinate system to the (obscure) -Y-Up co-ordinate system of the cubemap textures. (Thanks Microsoft, for Direct3D, not.)*/"+
 			"	texCoord=vec3(inPosition.x, -inPosition.z, inPosition.y);"+
+			"	vertex=inPosition;"+
 			"	gl_Position=projectionMatrix*modelViewMatrix*vec4(inPosition, 1.0);"+
 			"}";
 
 		const string fragmentShaderSource=
 			"#version 400\n"+
 			"uniform samplerCube sampler;"+
+			"uniform struct Sun"+
+			"{"+
+			"	vec3 Position;"+
+			"	vec4 Color;"+
+			"	int Mode;"+
+			"} sun;"+
 			"in vec3 texCoord;"+
+			"in vec3 vertex;"+
 			"out vec4 outputColor;"+
 			"void main()"+
 			"{"+
-			"	outputColor=texture(sampler, texCoord);"+
+			"	float dist=acos(dot(normalize(vertex), normalize(sun.Position)));"+
+			"	if(dist<=0.1&&vertex.z>=-0.02)"+
+			"	{"+
+			"		float att=clamp(exp(-dist*dist*1000)*1.4, 0, 1);"+
+			"		if(sun.Mode==0) outputColor=mix(texture(sampler, texCoord), sun.Color, att);"+
+			"		else if(sun.Mode==1) outputColor=texture(sampler, texCoord)+sun.Color*att;"+
+			"		else outputColor=texture(sampler, texCoord);"+
+			"	}"+
+			"	else"+
+			"	{"+
+			"		outputColor=texture(sampler, texCoord);"+
+			"	}"+
 			"}";
 		#endregion
 
@@ -70,6 +90,7 @@ namespace OpenGLHelper
 		uint vao, vbo, texture;
 		ShaderProgram program;
 		int uniformIndexProjectionMatrix, uniformIndexModelViewMatrix, uniformIndexSampler;
+		int uniformIndexSunPosition, uniformIndexSunColor, uniformIndexSunMode;
 		#endregion
 
 		public SkyBox()
@@ -77,8 +98,11 @@ namespace OpenGLHelper
 			#region Init shader program and get uniform locations
 			program=new ShaderProgram(vertexShaderSource, fragmentShaderSource);
 			uniformIndexProjectionMatrix=program.GetUniformLocation("projectionMatrix");
-			uniformIndexModelViewMatrix=program.GetUniformLocation( "modelViewMatrix");
+			uniformIndexModelViewMatrix=program.GetUniformLocation("modelViewMatrix");
 			uniformIndexSampler=program.GetUniformLocation("sampler");
+			uniformIndexSunPosition=program.GetUniformLocation("sun.Position");
+			uniformIndexSunColor=program.GetUniformLocation("sun.Color");
+			uniformIndexSunMode=program.GetUniformLocation("sun.Mode");
 			#endregion
 
 			#region Init program constants (uniform that should never change)
@@ -86,6 +110,8 @@ namespace OpenGLHelper
 
 			// Tell shader which texture unit to use
 			gl.Uniform1i(uniformIndexSampler, 0);
+			gl.Uniform3f(uniformIndexSunPosition, 0, 0, 0); // Sun invisible
+			SetSunModeAndDefaultSunColor(0);
 			#endregion
 
 			#region Make vertex array for the box
@@ -147,7 +173,35 @@ namespace OpenGLHelper
 			gl.UniformMatrix4fv(uniformIndexProjectionMatrix, 1, false, projectionMatrix);
 		}
 
-		public void Draw(float[] modelViewMatrix)
+		public void SetSunPostion(float x, float y, float z)
+		{
+			program.UseProgram();
+			gl.Uniform3f(uniformIndexSunPosition, x, y, z);
+		}
+
+		public void SetSunColor(float red, float green, float blue)
+		{
+			program.UseProgram();
+			gl.Uniform4f(uniformIndexSunColor, red, green, blue, 1);
+		}
+
+		public void SetSunMode(int mode)
+		{
+			program.UseProgram();
+			gl.Uniform1i(uniformIndexSunMode, mode);
+		}
+
+		public void SetSunModeAndDefaultSunColor(int mode)
+		{
+			program.UseProgram();
+			gl.Uniform1i(uniformIndexSunMode, mode);
+
+			if(mode==0) gl.Uniform4f(uniformIndexSunColor, 1, 0.95f, 0.9f, 1);
+			else if(mode==1) gl.Uniform4f(uniformIndexSunColor, 0.75f, 0.5f, 0, 1);
+			else gl.Uniform4f(uniformIndexSunColor, 1, 1, 1, 1);
+		}
+
+		public void Draw(float[] viewMatrix)
 		{
 			gl.DepthMask(false);
 
@@ -162,7 +216,7 @@ namespace OpenGLHelper
 			gl.BindVertexArray(vao);
 
 			// Set camera
-			gl.UniformMatrix4fv(uniformIndexModelViewMatrix, 1, false, modelViewMatrix);
+			gl.UniformMatrix4fv(uniformIndexModelViewMatrix, 1, false, viewMatrix);
 
 			gl.DrawArrays(glDrawMode.TRIANGLE_STRIP, 0, 18);
 
