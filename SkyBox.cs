@@ -106,7 +106,7 @@ namespace OpenGLHelper
 
 		public delegate byte[] TextureLoader(string filename, out int width, out int height, out glPixelFormat format);
 
-		public void LoadTextures(string sourceDirectory, TextureLoader textureLoader)
+		public void LoadTextures(string sourceDirectory, TextureLoader textureLoader, string ext=".png")
 		{
 			glPixelFormat textureFormat;
 			int textureWidth, textureHeight;
@@ -116,17 +116,17 @@ namespace OpenGLHelper
 			gl.BindTexture(glTextureTarget.TEXTURE_CUBE_MAP, texture);
 
 			// Set up the textures in the (obscure) -Y-Up co-ordinate system of the cubemap textures. (Thanks Microsoft, for Direct3D, not.)
-			byte[] textureBits=textureLoader(sourceDirectory+"\\south.png", out textureWidth, out textureHeight, out textureFormat); // back
+			byte[] textureBits=textureLoader(sourceDirectory+"\\south"+ext, out textureWidth, out textureHeight, out textureFormat); // back
 			gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, glInternalFormat.RGB8, textureWidth, textureHeight, 0, textureFormat, glPixelDataType.UNSIGNED_BYTE, textureBits);
-			textureBits=textureLoader(sourceDirectory+"\\north.png", out textureWidth, out textureHeight, out textureFormat); // front
+			textureBits=textureLoader(sourceDirectory+"\\north"+ext, out textureWidth, out textureHeight, out textureFormat); // front
 			gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_CUBE_MAP_POSITIVE_Z, 0, glInternalFormat.RGB8, textureWidth, textureHeight, 0, textureFormat, glPixelDataType.UNSIGNED_BYTE, textureBits);
-			textureBits=textureLoader(sourceDirectory+"\\zenith.png", out textureWidth, out textureHeight, out textureFormat); // top; connected with bottom edge to North's top edge
+			textureBits=textureLoader(sourceDirectory+"\\zenith"+ext, out textureWidth, out textureHeight, out textureFormat); // top; connected with bottom edge to North's top edge
 			gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, glInternalFormat.RGB8, textureWidth, textureHeight, 0, textureFormat, glPixelDataType.UNSIGNED_BYTE, textureBits);
-			textureBits=textureLoader(sourceDirectory+"\\nadir.png", out textureWidth, out textureHeight, out textureFormat); // bottom; connected with top edge to North's bottom edge
+			textureBits=textureLoader(sourceDirectory+"\\nadir"+ext, out textureWidth, out textureHeight, out textureFormat); // bottom; connected with top edge to North's bottom edge
 			gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, glInternalFormat.RGB8, textureWidth, textureHeight, 0, textureFormat, glPixelDataType.UNSIGNED_BYTE, textureBits);
-			textureBits=textureLoader(sourceDirectory+"\\west.png", out textureWidth, out textureHeight, out textureFormat); // left
+			textureBits=textureLoader(sourceDirectory+"\\west"+ext, out textureWidth, out textureHeight, out textureFormat); // left
 			gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_CUBE_MAP_NEGATIVE_X, 0, glInternalFormat.RGB8, textureWidth, textureHeight, 0, textureFormat, glPixelDataType.UNSIGNED_BYTE, textureBits);
-			textureBits=textureLoader(sourceDirectory+"\\east.png", out textureWidth, out textureHeight, out textureFormat); // right
+			textureBits=textureLoader(sourceDirectory+"\\east"+ext, out textureWidth, out textureHeight, out textureFormat); // right
 			gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_CUBE_MAP_POSITIVE_X, 0, glInternalFormat.RGB8, textureWidth, textureHeight, 0, textureFormat, glPixelDataType.UNSIGNED_BYTE, textureBits);
 
 			gl.TexParameteri(glTextureTarget.TEXTURE_CUBE_MAP, glTextureParameter.TEXTURE_MAG_FILTER, glFilter.LINEAR);
