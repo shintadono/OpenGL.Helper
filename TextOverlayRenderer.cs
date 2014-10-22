@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using OpenGL.Core;
 
-namespace OpenGLHelper
+namespace OpenGL.Helper
 {
 	public class TextOverlayRenderer
 	{

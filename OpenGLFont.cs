@@ -7,7 +7,7 @@ using System.Text;
 using Win32;
 using Font=System.Drawing.Font;
 
-namespace OpenGLHelper
+namespace OpenGL.Helper
 {
 	public class OpenGLFont
 	{

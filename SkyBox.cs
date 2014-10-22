@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenGL.Core;
 
-namespace OpenGLHelper
+namespace OpenGL.Helper
 {
 	public class SkyBox
 	{
