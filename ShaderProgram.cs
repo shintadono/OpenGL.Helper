@@ -20,13 +20,13 @@ namespace OpenGLHelper
 				gl.CompileShader(shaderVertex);
 				gl.GetShaderi(shaderVertex, glShaderParameter.COMPILE_STATUS, out iCompilationStatus);
 				if(iCompilationStatus==0)
-					throw new Exception("Shader compilation error. (SkyBox's Vertex Shader)");
+					throw new Exception("Shader compilation error. (Vertex Shader)");
 
 				gl.ShaderSource(shaderFragment, fragmentShaderSource);
 				gl.CompileShader(shaderFragment);
 				gl.GetShaderi(shaderFragment, glShaderParameter.COMPILE_STATUS, out iCompilationStatus);
 				if(iCompilationStatus==0)
-					throw new Exception("Shader compilation error. (SkyBox's Fragment Shader)");
+					throw new Exception("Shader compilation error. (Fragment Shader)");
 			}
 			catch
 			{
@@ -46,7 +46,7 @@ namespace OpenGLHelper
 				int iLinkStatus;
 				gl.GetProgrami(program, glProgramParameter.LINK_STATUS, out iLinkStatus);
 				if(iLinkStatus==0)
-					throw new Exception("Shader program linkage error. (SkyBox's Shader Program)");
+					throw new Exception("Shader program linkage error. (Shader Program)");
 			}
 			catch
 			{
