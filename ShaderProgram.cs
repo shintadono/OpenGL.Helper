@@ -20,13 +20,23 @@ namespace OpenGL.Helper
 				gl.CompileShader(shaderVertex);
 				gl.GetShaderi(shaderVertex, glShaderParameter.COMPILE_STATUS, out iCompilationStatus);
 				if(iCompilationStatus==0)
-					throw new Exception("Shader compilation error. (Vertex Shader)");
+				{
+					int length;
+					string infoLog;
+					gl.GetShaderInfoLog(shaderVertex, 1024, out length, out infoLog);
+					throw new Exception("Shader compilation error (Vertex Shader):\n"+infoLog);
+				}
 
 				gl.ShaderSource(shaderFragment, fragmentShaderSource);
 				gl.CompileShader(shaderFragment);
 				gl.GetShaderi(shaderFragment, glShaderParameter.COMPILE_STATUS, out iCompilationStatus);
 				if(iCompilationStatus==0)
-					throw new Exception("Shader compilation error. (Fragment Shader)");
+				{
+					int length;
+					string infoLog;
+					gl.GetShaderInfoLog(shaderFragment, 1024, out length, out infoLog);
+					throw new Exception("Shader compilation error (Fragment Shader):\n"+infoLog);
+				}
 			}
 			catch
 			{
@@ -46,7 +56,12 @@ namespace OpenGL.Helper
 				int iLinkStatus;
 				gl.GetProgrami(program, glProgramParameter.LINK_STATUS, out iLinkStatus);
 				if(iLinkStatus==0)
-					throw new Exception("Shader program linkage error. (Shader Program)");
+				{
+					int length;
+					string infoLog;
+					gl.GetProgramInfoLog(program, 1024, out length, out infoLog);
+					throw new Exception("Shader program linkage error (Shader Program):\n"+infoLog);
+				}
 			}
 			catch
 			{
