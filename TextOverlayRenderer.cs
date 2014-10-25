@@ -11,7 +11,7 @@ namespace OpenGL.Helper
 
 		#region Shader (inlined)
 		const string vertexShaderSource=
-			"#version 400\n"+
+			"#version 330\n"+
 			"uniform mat4 projectionMatrix;"+
 			"uniform mat4 modelViewMatrix;"+
 			"layout (location=0) in vec2 inPosition;"+
@@ -24,14 +24,14 @@ namespace OpenGL.Helper
 			"}";
 
 		const string fragmentShaderSource=
-			"#version 400\n"+
+			"#version 330\n"+
 			"uniform sampler2DRect sampler;"+
-			"uniform vec4 textColor;"+
+			"uniform vec4 color;"+
 			"in vec2 texCoord;"+
 			"out vec4 outputColor;"+
 			"void main()"+
 			"{"+
-			"	outputColor=vec4(textColor.rgb, textColor.a*texture(sampler, texCoord).r);"+
+			"	outputColor=vec4(color.rgb, color.a*texture(sampler, texCoord).r);"+
 			"}";
 		#endregion
 
@@ -48,7 +48,7 @@ namespace OpenGL.Helper
 			uniformIndexProjectionMatrix=program.GetUniformLocation("projectionMatrix");
 			uniformIndexModelViewMatrix=program.GetUniformLocation("modelViewMatrix");
 			uniformIndexSampler=program.GetUniformLocation("sampler");
-			uniformIndexColor=program.GetUniformLocation("textColor");
+			uniformIndexColor=program.GetUniformLocation("color");
 			#endregion
 
 			#region Init program constants (uniform that should never change)
@@ -97,7 +97,7 @@ namespace OpenGL.Helper
 			gl.Uniform4f(uniformIndexColor, red, green, blue, alpha);
 		}
 
-		public void DrawText(string msg, float[] modelViewMatrix, OpenGLFont.AnchorPlacement anchor=OpenGLFont.AnchorPlacement.BottomLeft)
+		public void DrawText(string msg, float[] modelViewMatrix, AnchorPlacement anchor=AnchorPlacement.BottomLeft)
 		{
 			program.UseProgram();
 
@@ -122,7 +122,7 @@ namespace OpenGL.Helper
 			gl.DrawArrays(glDrawMode.TRIANGLES, 0, vboArray.Count/4); // each element(Point) has x, y, u and v
 		}
 
-		public void DrawText(string msg, int posX, int posY, OpenGLFont.AnchorPlacement anchor=OpenGLFont.AnchorPlacement.BottomLeft)
+		public void DrawText(string msg, int posX, int posY, AnchorPlacement anchor=AnchorPlacement.BottomLeft)
 		{
 			program.UseProgram();
 

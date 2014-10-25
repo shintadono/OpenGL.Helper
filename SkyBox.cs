@@ -43,7 +43,7 @@ namespace OpenGL.Helper
 
 		#region Shader (inlined)
 		const string vertexShaderSource=
-			"#version 400\n"+
+			"#version 330\n"+
 			"uniform mat4 projectionMatrix;"+
 			"uniform mat4 modelViewMatrix;"+
 			"in vec3 inPosition;"+
@@ -58,7 +58,7 @@ namespace OpenGL.Helper
 			"}";
 
 		const string fragmentShaderSource=
-			"#version 400\n"+
+			"#version 330\n"+
 			"uniform samplerCube sampler;"+
 			"uniform struct Sun"+
 			"{"+
