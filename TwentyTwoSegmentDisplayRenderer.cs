@@ -5,8 +5,11 @@ namespace OpenGL.Helper
 {
 	public class TwentyTwoSegmentDisplayRenderer
 	{
+		public const int FontWidthBig=36;
+		public const int FontHeightBig=52;
+
 		#region Font texture 36x52 pixel
-		static readonly byte[] fontTexture= {
+		static readonly byte[] fontTextureBig= {
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 22, 22, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 22, 22, 0, 0, 0, 0,
@@ -62,8 +65,42 @@ namespace OpenGL.Helper
 			};
 		#endregion
 
-		public readonly int FontWidth=36;
-		public readonly int FontHeight=52;
+		public const int FontWidthSmall=22;
+		public const int FontHeightSmall=26;
+
+		#region Font texture 22x26 pixel
+		static readonly byte[] fontTextureSmall= {
+				0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 22, 0, 0, 
+				0, 0, 15, 15, 15, 15, 15, 15, 15, 0, 16, 16, 16, 16, 16, 16, 16, 0, 22, 22, 17, 0, 
+				0, 10, 0, 15, 15, 15, 15, 15, 0, 12, 0, 16, 16, 16, 16, 16, 0, 14, 0, 17, 17, 17, 
+				0, 10, 10, 11, 0, 0, 0, 0, 12, 12, 0, 0, 0, 0, 0, 13, 14, 14, 0, 0, 17, 0, 
+				0, 10, 10, 11, 11, 0, 0, 0, 12, 12, 0, 0, 0, 0, 13, 13, 14, 14, 0, 0, 0, 0, 
+				0, 10, 10, 11, 11, 0, 0, 0, 12, 12, 0, 0, 0, 0, 13, 13, 14, 14, 0, 0, 0, 0, 
+				0, 10, 10, 0, 11, 11, 0, 0, 12, 12, 0, 0, 0, 13, 13, 0, 14, 14, 0, 0, 0, 0, 
+				0, 10, 10, 0, 11, 11, 0, 0, 12, 12, 0, 0, 0, 13, 13, 0, 14, 14, 0, 0, 0, 0, 
+				0, 10, 10, 0, 0, 11, 11, 0, 12, 12, 0, 0, 13, 13, 0, 0, 14, 14, 0, 0, 0, 0, 
+				0, 10, 10, 0, 0, 11, 11, 0, 12, 12, 0, 0, 13, 13, 0, 0, 14, 14, 0, 0, 0, 0, 
+				0, 10, 10, 0, 0, 0, 11, 11, 12, 12, 0, 13, 13, 0, 0, 0, 14, 14, 0, 0, 0, 0, 
+				0, 10, 10, 0, 0, 0, 11, 11, 11, 12, 13, 13, 13, 0, 0, 0, 14, 14, 0, 0, 0, 0, 
+				0, 10, 0, 0, 0, 0, 0, 0, 11, 12, 13, 9, 9, 9, 9, 9, 0, 14, 0, 0, 18, 0, 
+				0, 0, 8, 8, 8, 8, 8, 8, 8, 0, 9, 9, 9, 9, 9, 9, 9, 0, 0, 18, 18, 18, 
+				0, 3, 0, 8, 8, 8, 8, 8, 4, 5, 6, 0, 0, 0, 0, 0, 0, 7, 0, 0, 18, 0, 
+				0, 3, 3, 0, 0, 0, 4, 4, 4, 5, 6, 6, 6, 0, 0, 0, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 0, 0, 0, 4, 4, 0, 5, 5, 6, 6, 0, 0, 0, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 0, 0, 4, 4, 0, 0, 5, 5, 0, 6, 6, 0, 0, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 0, 0, 4, 4, 0, 0, 5, 5, 0, 6, 6, 0, 0, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 0, 4, 4, 0, 0, 0, 5, 5, 0, 0, 6, 6, 0, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 0, 4, 4, 0, 0, 0, 5, 5, 0, 0, 6, 6, 0, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 4, 4, 0, 0, 0, 0, 5, 5, 0, 0, 0, 6, 6, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 4, 4, 0, 0, 0, 0, 5, 5, 0, 0, 0, 6, 6, 7, 7, 0, 0, 0, 0, 
+				0, 3, 3, 4, 0, 0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 6, 7, 7, 0, 19, 21, 20, 
+				0, 3, 0, 1, 1, 1, 1, 1, 0, 5, 0, 2, 2, 2, 2, 2, 0, 7, 0, 19, 0, 20, 
+				0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 19, 21, 20, 
+			};
+		#endregion
+
+		public readonly int FontWidth;
+		public readonly int FontHeight;
 
 		#region Bitpatterns for numbers letters and some special stuff
 		static readonly int[] lookUpTable= { // 0-127 (do we need more? => if so extend)
@@ -81,7 +118,7 @@ namespace OpenGL.Helper
 		static readonly float[] Identity= { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
 
 		#region Shader (inlined)
-		const string vertexShaderSource=
+		const string vertexShaderSourceBig=
 			"#version 330\n"+
 			"uniform mat4 projectionMatrix;"+
 			"uniform mat4 modelViewMatrix;"+
@@ -98,6 +135,25 @@ namespace OpenGL.Helper
 			"	else if(v==1||v==4) texCoord=vec2(36, 0);"+
 			"	else if(v==2||v==3) texCoord=vec2(0, 52);"+
 			"	else if(v==5) texCoord=vec2(36, 52);"+
+			"}";
+
+		const string vertexShaderSourceSmall=
+			"#version 330\n"+
+			"uniform mat4 projectionMatrix;"+
+			"uniform mat4 modelViewMatrix;"+
+			"layout (location=0) in vec2 inPosition;"+
+			"layout (location=1) in int inBitmask;"+
+			"out vec2 texCoord;"+
+			"flat out int bitmask;"+
+			"void main()"+
+			"{"+
+			"	gl_Position=projectionMatrix*modelViewMatrix*vec4(inPosition, 0.0, 1.0);"+
+			"	bitmask=inBitmask;"+
+			"	int v=gl_VertexID%6;"+
+			"	if(v==0) texCoord=vec2(0, 0);"+
+			"	else if(v==1||v==4) texCoord=vec2(22, 0);"+
+			"	else if(v==2||v==3) texCoord=vec2(0, 26);"+
+			"	else if(v==5) texCoord=vec2(22, 26);"+
 			"}";
 
 		const string fragmentShaderSource=
@@ -121,10 +177,10 @@ namespace OpenGL.Helper
 		ShaderProgram program;
 		int uniformIndexProjectionMatrix, uniformIndexModelViewMatrix, uniformIndexSampler, uniformIndexColor, uniformIndexOffColor;
 
-		public TwentyTwoSegmentDisplayRenderer()
+		public TwentyTwoSegmentDisplayRenderer(bool small=false)
 		{
 			#region Init shader program and get uniform locations
-			program=new ShaderProgram(vertexShaderSource, fragmentShaderSource);
+			program=new ShaderProgram(small?vertexShaderSourceSmall:vertexShaderSourceBig, fragmentShaderSource);
 			uniformIndexProjectionMatrix=program.GetUniformLocation("projectionMatrix");
 			uniformIndexModelViewMatrix=program.GetUniformLocation("modelViewMatrix");
 			uniformIndexSampler=program.GetUniformLocation("sampler");
@@ -150,7 +206,18 @@ namespace OpenGL.Helper
 
 			gl.BindTexture(glTextureTarget.TEXTURE_RECTANGLE, texture);
 
-			gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_RECTANGLE, 0, glInternalFormat.R8UI, FontWidth, FontHeight, 0, glPixelFormat.RED_INTEGER, glPixelDataType.UNSIGNED_BYTE, fontTexture);
+			if(small)
+			{
+				FontWidth=FontWidthSmall;
+				FontHeight=FontHeightSmall;
+				gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_RECTANGLE, 0, glInternalFormat.R8UI, FontWidth, FontHeight, 0, glPixelFormat.RED_INTEGER, glPixelDataType.UNSIGNED_BYTE, fontTextureSmall);
+			}
+			else
+			{
+				FontWidth=FontWidthBig;
+				FontHeight=FontHeightBig;
+				gl.TexImage2D(glTexture2DProxyTarget.TEXTURE_RECTANGLE, 0, glInternalFormat.R8UI, FontWidth, FontHeight, 0, glPixelFormat.RED_INTEGER, glPixelDataType.UNSIGNED_BYTE, fontTextureBig);
+			}
 
 			gl.TexParameteri(glTextureTarget.TEXTURE_RECTANGLE, glTextureParameter.TEXTURE_WRAP_S, glTextureWrapMode.CLAMP_TO_EDGE); // we need this line for rectangle textures to work
 			gl.TexParameteri(glTextureTarget.TEXTURE_RECTANGLE, glTextureParameter.TEXTURE_WRAP_T, glTextureWrapMode.CLAMP_TO_EDGE); // we need this line for rectangle textures to work
@@ -194,8 +261,7 @@ namespace OpenGL.Helper
 
 			gl.UniformMatrix4fv(uniformIndexModelViewMatrix, 1, false, modelViewMatrix);
 
-			int length; // dummy
-			List<int> vboArray=BuildDrawBuffer(msg, 0, 0, out length, anchor);
+			List<int> vboArray=BuildDrawBuffer(TextToPatterns(msg), 0, 0, anchor);
 
 			gl.BindVertexArray(vao);
 
@@ -209,7 +275,7 @@ namespace OpenGL.Helper
 			gl.DrawArrays(glDrawMode.TRIANGLES, 0, vboArray.Count/3); // each element(Point) has x, y and bitmask
 		}
 
-		public void DrawText(string msg, int posX, int posY, AnchorPlacement anchor=AnchorPlacement.BottomLeft)
+		public void DrawText(string msg, int posX=0, int posY=0, AnchorPlacement anchor=AnchorPlacement.BottomLeft)
 		{
 			program.UseProgram();
 
@@ -220,8 +286,57 @@ namespace OpenGL.Helper
 
 			gl.UniformMatrix4fv(uniformIndexModelViewMatrix, 1, false, Identity);
 
-			int length; // dummy
-			List<int> vboArray=BuildDrawBuffer(msg, posX, posY, out length, anchor);
+			List<int> vboArray=BuildDrawBuffer(TextToPatterns(msg), posX, posY, anchor);
+
+			gl.BindVertexArray(vao);
+
+			gl.BindBuffer(glBufferTarget.ARRAY_BUFFER, vbo);
+			gl.BufferData(glBufferTarget.ARRAY_BUFFER, vboArray.Count*sizeof(int), vboArray.ToArray(), glBufferUsage.DYNAMIC_DRAW);
+			gl.EnableVertexAttribArray(0);
+			gl.VertexAttribPointer(0, 2, glVertexAttribType.INT, false, sizeof(int)*3, 0);
+			gl.EnableVertexAttribArray(1);
+			gl.VertexAttribIPointer(1, 1, glVertexAttribType.INT, sizeof(int)*3, sizeof(int)*2);
+
+			gl.DrawArrays(glDrawMode.TRIANGLES, 0, vboArray.Count/3); // each element(Point) has x, y and bitmask
+		}
+
+		public void DrawPatterns(ICollection<int> patterns, float[] modelViewMatrix, AnchorPlacement anchor=AnchorPlacement.BottomLeft)
+		{
+			program.UseProgram();
+
+			// One texture, not sampler
+			gl.ActiveTexture(glTextureUnit.TEXTURE0);
+			gl.BindTexture(glTextureTarget.TEXTURE_RECTANGLE, texture);
+			gl.BindSampler(0, 0);
+
+			gl.UniformMatrix4fv(uniformIndexModelViewMatrix, 1, false, modelViewMatrix);
+
+			List<int> vboArray=BuildDrawBuffer(patterns, 0, 0, anchor);
+
+			gl.BindVertexArray(vao);
+
+			gl.BindBuffer(glBufferTarget.ARRAY_BUFFER, vbo);
+			gl.BufferData(glBufferTarget.ARRAY_BUFFER, vboArray.Count*sizeof(int), vboArray.ToArray(), glBufferUsage.DYNAMIC_DRAW);
+			gl.EnableVertexAttribArray(0);
+			gl.VertexAttribPointer(0, 2, glVertexAttribType.INT, false, sizeof(int)*3, 0);
+			gl.EnableVertexAttribArray(1);
+			gl.VertexAttribIPointer(1, 1, glVertexAttribType.INT, sizeof(int)*3, sizeof(int)*2);
+
+			gl.DrawArrays(glDrawMode.TRIANGLES, 0, vboArray.Count/3); // each element(Point) has x, y and bitmask
+		}
+
+		public void DrawPatterns(ICollection<int> patterns, int posX=0, int posY=0, AnchorPlacement anchor=AnchorPlacement.BottomLeft)
+		{
+			program.UseProgram();
+
+			// One texture, not sampler
+			gl.ActiveTexture(glTextureUnit.TEXTURE0);
+			gl.BindTexture(glTextureTarget.TEXTURE_RECTANGLE, texture);
+			gl.BindSampler(0, 0);
+
+			gl.UniformMatrix4fv(uniformIndexModelViewMatrix, 1, false, Identity);
+
+			List<int> vboArray=BuildDrawBuffer(patterns, posX, posY, anchor);
 
 			gl.BindVertexArray(vao);
 
@@ -259,43 +374,10 @@ namespace OpenGL.Helper
 			gl.DeleteTextures(1, texture);
 		}
 
-		List<int> BuildDrawBuffer(string text, int posX, int posY, out int length, AnchorPlacement anchor)
+		List<int> TextToPatterns(string text)
 		{
-			int horizontalPlacement=(int)anchor&0x03;
-			int veticalPlacement=((int)anchor>>4)&0x03;
+			List<int> patterns=new List<int>();
 
-			switch(veticalPlacement)
-			{
-				case 1: posY-=FontHeight/2; break; // center
-				case 2: posY-=FontHeight; break; // right
-			}
-
-			if(horizontalPlacement==1||horizontalPlacement==2)
-			{
-				int len=0;
-				for(int i=0; i<text.Length; i++, len++)
-				{
-					int ch=text[i];
-					if(ch==','||ch=='.'||ch==';'||ch==':'||ch=='\''||ch=='"'||ch=='°') continue;
-					else if(text.Length>i+1)
-					{
-						int peek=text[i+1];
-						if(peek==','||peek=='.'||peek==';'||peek==':'||peek=='\''||peek=='"'||peek=='°') i++;
-					}
-				}
-
-				len*=FontWidth;
-
-				switch(horizontalPlacement)
-				{
-					case 1: posX-=len/2; break; // center
-					case 2: posX-=len; break; // top
-				}
-			}
-
-			List<int> ret=new List<int>();
-
-			length=0;
 			for(int i=0; i<text.Length; i++)
 			{
 				int ch=text[i];
@@ -316,8 +398,38 @@ namespace OpenGL.Helper
 				else if(ch=='#'||ch>127) ch=1;
 				if(add=='°') add=2;
 
-				int entry=lookUpTable[ch]|lookUpTable[add];
+				patterns.Add(lookUpTable[ch]|lookUpTable[add]);
+			}
 
+			return patterns;
+		}
+
+		List<int> BuildDrawBuffer(ICollection<int> patterns, int posX, int posY, AnchorPlacement anchor)
+		{
+			int horizontalPlacement=(int)anchor&0x03;
+			int veticalPlacement=((int)anchor>>4)&0x03;
+
+			switch(veticalPlacement)
+			{
+				case 1: posY-=FontHeight/2; break; // center
+				case 2: posY-=FontHeight; break; // right
+			}
+
+			if(horizontalPlacement==1||horizontalPlacement==2)
+			{
+				int len=patterns.Count*FontWidth;
+
+				switch(horizontalPlacement)
+				{
+					case 1: posX-=len/2; break; // center
+					case 2: posX-=len; break; // top
+				}
+			}
+
+			List<int> ret=new List<int>();
+
+			foreach(int entry in patterns)
+			{
 				int left=posX;
 				int right=left+FontWidth;
 				int bottom=posY;
@@ -358,7 +470,6 @@ namespace OpenGL.Helper
 				#endregion
 
 				posX+=FontWidth;
-				length+=FontWidth;
 			}
 
 			return ret;
