@@ -60,6 +60,7 @@ namespace OpenGL.Helper
 		const string fragmentShaderSource=
 			"#version 330\n"+
 			"uniform samplerCube sampler;"+
+			"uniform vec4 light;"+
 			"uniform struct Sun"+
 			"{"+
 			"	vec3 Position;"+
@@ -75,13 +76,13 @@ namespace OpenGL.Helper
 			"	if(dist<=0.1&&vertex.z>=-0.02)"+
 			"	{"+
 			"		float att=clamp(exp(-dist*dist*1000)*1.4, 0, 1);"+
-			"		if(sun.Mode==0) outputColor=mix(texture(sampler, texCoord), sun.Color, att);"+
-			"		else if(sun.Mode==1) outputColor=texture(sampler, texCoord)+sun.Color*att;"+
-			"		else outputColor=texture(sampler, texCoord);"+
+			"		if(sun.Mode==0) outputColor=mix(texture(sampler, texCoord)*light, sun.Color, att);"+
+			"		else if(sun.Mode==1) outputColor=texture(sampler, texCoord)*light+sun.Color*att;"+
+			"		else outputColor=texture(sampler, texCoord)*light;"+
 			"	}"+
 			"	else"+
 			"	{"+
-			"		outputColor=texture(sampler, texCoord);"+
+			"		outputColor=texture(sampler, texCoord)*light;"+
 			"	}"+
 			"}";
 		#endregion
@@ -90,7 +91,8 @@ namespace OpenGL.Helper
 		uint vao, vbo, texture;
 		ShaderProgram program;
 		int uniformIndexProjectionMatrix, uniformIndexModelViewMatrix, uniformIndexSampler;
-		int uniformIndexSunPosition, uniformIndexSunColor, uniformIndexSunMode;
+		int uniformIndexSunPosition, uniformIndexSunColor, uniformIndexSunMode, uniformIndexLight;
+		float lastLightRed=1, lastLightGreen=1, lastLightBlue=1;
 		#endregion
 
 		public SkyBox()
@@ -103,6 +105,7 @@ namespace OpenGL.Helper
 			uniformIndexSunPosition=program.GetUniformLocation("sun.Position");
 			uniformIndexSunColor=program.GetUniformLocation("sun.Color");
 			uniformIndexSunMode=program.GetUniformLocation("sun.Mode");
+			uniformIndexLight=program.GetUniformLocation("light");
 			#endregion
 
 			#region Init program constants (uniform that should never change)
@@ -111,6 +114,7 @@ namespace OpenGL.Helper
 			// Tell shader which texture unit to use
 			gl.Uniform1i(uniformIndexSampler, 0);
 			gl.Uniform3f(uniformIndexSunPosition, 0, 0, 0); // Sun invisible
+			gl.Uniform4f(uniformIndexLight, 1, 1, 1, 1);
 			SetSunModeAndDefaultSunColor(0);
 			#endregion
 
@@ -173,10 +177,49 @@ namespace OpenGL.Helper
 			gl.UniformMatrix4fv(uniformIndexProjectionMatrix, 1, false, projectionMatrix);
 		}
 
-		public void SetSunPostion(float x, float y, float z)
+		public void SetSunPostion(float x, float y, float z, bool setSunLight=false)
 		{
 			program.UseProgram();
 			gl.Uniform3f(uniformIndexSunPosition, x, y, z);
+
+			if(setSunLight) SetSunLight(Math.Asin(z/Math.Sqrt(x*x+y*y+z*z)));
+		}
+
+		static double CalcSunLightAttenuation(double angle, double limit)
+		{
+			if(angle>0) return 1;
+			if(angle<-limit) return 0;
+			return 1+angle/limit;
+		}
+
+		const double D2R=Math.PI/180;
+
+		public void SetSunLight(double angle)
+		{
+			angle=Math.Asin(Math.Sin(angle)); // Bring angle in the range [PI/2, -PI/2]
+
+			float red=(float)(CalcSunLightAttenuation(angle, 3.8*D2R)*0.7+0.3);
+			float green=(float)(CalcSunLightAttenuation(angle, 3.2*D2R)*0.7+0.3);
+			float blue=(float)(CalcSunLightAttenuation(angle, 3*D2R)*0.7+0.3);
+
+			SetSunLight(red, green, blue);
+		}
+
+		public void SetSunLight(float red, float green, float blue)
+		{
+			lastLightRed=red;
+			lastLightGreen=green;
+			lastLightBlue=blue;
+
+			program.UseProgram();
+			gl.Uniform4f(uniformIndexLight, red, green, blue, 1);
+		}
+
+		public void GetSunLight(out float red, out float green, out float blue)
+		{
+			red=lastLightRed;
+			green=lastLightGreen;
+			blue=lastLightBlue;
 		}
 
 		public void SetSunColor(float red, float green, float blue)
